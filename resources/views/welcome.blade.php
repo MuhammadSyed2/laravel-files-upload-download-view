@@ -14,7 +14,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         
     </head>
-    <body class="font-sans antialiased dark:bg-black dark:text-white/50">
+    <body class="font-sans antialiased dark:bg-black dark:text-white">
         {{-- <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
             <img id="background" class="absolute -left-20 top-0 max-w-[877px]" src="https://laravel.com/assets/img/welcome/background.svg" />
             <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
@@ -168,28 +168,69 @@
             </div>
         </div> --}}
         
-        <div>
-            <h3>Category</h3>
-            <table>
+        <div class="">
+            <h3 class="text-center">Category</h3>
+            <table class="mx-auto">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Add</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                    <tr class="">
+                        <th class="px-3">ID</th>
+                        <th class="px-3">Name</th>
+                        <th class="px-3">Description</th>
+                        <th class="px-3">Add</th>
+                        <th class="px-3">Edit</th>
+                        <th class="px-3">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>C1</td>
-                        <td><button class="p-2 bg-emerald-600">Add</button></td>
-                        <td><button class="p-2 bg-amber-600">Edit</button></td>
-                        <td><button class="p-2 bg-red-600">Delete</button></td>
+                        <td class="text-center">1</td>
+                        <td class="text-center">C1</td>
+                        <td class="text-center"><button class="p-2 bg-emerald-600 rounded-lg"  data-bs-toggle="modal" data-bs-target="#addModal">Add</button></td>
+                        <td class="text-center"><button class="p-2 bg-amber-600 rounded-lg"  data-bs-toggle="modal" data-bs-target="#editModal">Edit</button></td>
+                        <td class="text-center"><button class="p-2 bg-red-600 rounded-lg"  data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        {{-- add modal --}}
+        <div class="modal fade" id="addModal" tabindex="-1"
+            aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
+                        <h1 class="modal-title fs-5 text-white" id="addModalLabel">Add</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close" style="filter: invert(100%);"></button>
+                    </div>
+                    {{-- <form class="" id="deleteForm" method="POST" action="{{ route('ippool.destroy', ['ippool' => $ip_pool]) }}"> --}}
+                        {{-- @csrf --}}
+                        <div class="modal-body">
+                            <div class="mb-2">
+                                <label for="name" class="form-label">Name : </label>
+                                <input readonly type="text" class="form-control" id="name" name="name">
+                            </div>
+                            <div class="mb-2">
+                                <label for="name" class="form-label">Description : </label>
+                                <input readonly type="text" class="form-control" id="name" name="name">
+                            </div>
+                            <div class="mb-2">
+                                <label for="status" class="form-label">Status : </label>
+                                <select name="status" id="status" class="form-select">
+                                    <option value="">Select an option</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                            <button class="btn btn-sm btn-danger" type="submit" onclick="this.disabled=true;this.form.submit();">Delete</button>
+                        </div>
+                    {{-- </form> --}}
+                </div>
+            </div>
+        </div>
+        
     </body>
 </html>
