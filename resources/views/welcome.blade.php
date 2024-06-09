@@ -13,8 +13,13 @@
         <!-- Styles -->
         <script src="https://cdn.tailwindcss.com"></script>
         
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
     </head>
-    <body class="font-sans antialiased dark:bg-black dark:text-white">
+    <body class="font-sans antialiased">
         {{-- <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
             <img id="background" class="absolute -left-20 top-0 max-w-[877px]" src="https://laravel.com/assets/img/welcome/background.svg" />
             <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
@@ -169,54 +174,139 @@
         </div> --}}
         
         <div class="">
-            <h3 class="text-center">Category</h3>
-            <table class="mx-auto">
+            <h1 class=" mx-2 text-center text-xl font-extrabold">Category</h1>
+
+            <center><button class="mx-2 px-3 py-1 bg-emerald-600 rounded-lg"  data-toggle="modal" data-target="#addModal">Add</button></center>
+            
+            <table class="mx-auto table">
                 <thead>
                     <tr class="">
-                        <th class="px-3">ID</th>
-                        <th class="px-3">Name</th>
-                        <th class="px-3">Description</th>
-                        <th class="px-3">Add</th>
-                        <th class="px-3">Edit</th>
-                        <th class="px-3">Delete</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Edit</th>
+                        <th class="text-center">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="text-center">1</td>
-                        <td class="text-center">C1</td>
-                        <td class="text-center"><button class="p-2 bg-emerald-600 rounded-lg"  data-bs-toggle="modal" data-bs-target="#addModal">Add</button></td>
-                        <td class="text-center"><button class="p-2 bg-amber-600 rounded-lg"  data-bs-toggle="modal" data-bs-target="#editModal">Edit</button></td>
-                        <td class="text-center"><button class="p-2 bg-red-600 rounded-lg"  data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button></td>
-                    </tr>
+                    @foreach ($categories as $category)
+                        <tr>
+                            <td class="text-center">{{ $category->id }}</td>
+                            <td class="text-center">{{ $category->name }}</td>
+                            <td class="text-center">{{ $category->description }}</td>
+                            <td class="text-center">{{ $category->status }}</td>
+                            <td class="text-center"><button class="p-2 bg-amber-600 rounded-lg"  data-toggle="modal" data-target="#editModal">Edit</button></td>
+                            <td class="text-center"><button class="p-2 bg-red-600 rounded-lg"  data-toggle="modal" data-target="#deleteModal">Delete</button></td>
+                        </tr>
+
+                        {{-- edit modal --}}
+                        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" 
+                            aria-labelledby="addModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
+                                        <h1 class="modal-title fs-5 text-white" id="addModalLabel">Edit Category</h1>
+                                        <button type="button" class="btn-close" data-dismiss="modal"
+                                            aria-label="Close" style="filter: invert(100%);"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form class="" id="deleteForm" method="POST" action="{{ route('category.store') }}">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="mb-2">
+                                                <label for="name" class="form-label">Name : </label>
+                                                <input type="text" class="form-control" id="name" name="name" value="{{ $category->name }}">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="description" class="form-label">Description : </label>
+                                                <input type="text" class="form-control" id="description" name="description" value="{{ $category->description }}">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="status" class="form-label">Status : </label>
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="">Select an option</option>
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                            <button class="btn btn-sm btn-warning" type="submit" onclick="this.disabled=true;this.form.submit();">Edit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- delete modal --}}
+                        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" 
+                            aria-labelledby="addModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
+                                        <h1 class="modal-title fs-5 text-white" id="addModalLabel">Add</h1>
+                                        <button type="button" class="btn-close" data-dismiss="modal"
+                                            aria-label="Close" style="filter: invert(100%);"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form class="" id="deleteForm" method="POST" action="{{ route('category.store') }}">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="mb-2">
+                                                <label for="name" class="form-label">Name : </label>
+                                                <input type="text" class="form-control" id="name" name="name" value="{{ $category->name }}">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="description" class="form-label">Description : </label>
+                                                <input type="text" class="form-control" id="description" name="description">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="status" class="form-label">Status : </label>
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="">Select an option</option>
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                                            <button class="btn btn-sm btn-primary" type="submit" onclick="this.disabled=true;this.form.submit();">Add</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    
                 </tbody>
             </table>
         </div>
 
         {{-- add modal --}}
-        <div class="modal fade" id="addModal" tabindex="-1"
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" 
             aria-labelledby="addModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
-                        <h1 class="modal-title fs-5 text-white" id="addModalLabel">Add</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close" style="filter: invert(100%);"></button>
+                        <h1 class="modal-title fs-5 text-white" id="addModalLabel">Add Category</h1>
+                        <button type="button" class="btn-close" data-dismiss="modal"
+                            aria-label="Close" style="filter: invert(100%);"><span aria-hidden="true">&times;</span></button>
                     </div>
-                    {{-- <form class="" id="deleteForm" method="POST" action="{{ route('ippool.destroy', ['ippool' => $ip_pool]) }}"> --}}
-                        {{-- @csrf --}}
+                    <form class="" id="deleteForm" method="POST" action="{{ route('category.store') }}">
+                        @csrf
                         <div class="modal-body">
                             <div class="mb-2">
                                 <label for="name" class="form-label">Name : </label>
-                                <input readonly type="text" class="form-control" id="name" name="name">
+                                <input type="text" class="form-control" id="name" name="name">
                             </div>
                             <div class="mb-2">
-                                <label for="name" class="form-label">Description : </label>
-                                <input readonly type="text" class="form-control" id="name" name="name">
+                                <label for="description" class="form-label">Description : </label>
+                                <input type="text" class="form-control" id="description" name="description">
                             </div>
                             <div class="mb-2">
                                 <label for="status" class="form-label">Status : </label>
-                                <select name="status" id="status" class="form-select">
+                                <select name="status" id="status" class="form-control">
                                     <option value="">Select an option</option>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
@@ -224,10 +314,10 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                            <button class="btn btn-sm btn-danger" type="submit" onclick="this.disabled=true;this.form.submit();">Delete</button>
+                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+                            <button class="btn btn-sm btn-primary" type="submit" onclick="this.disabled=true;this.form.submit();">Add</button>
                         </div>
-                    {{-- </form> --}}
+                    </form>
                 </div>
             </div>
         </div>
