@@ -25,13 +25,23 @@ class CategoryController extends Controller
         return redirect()->route('category.index');
     }
 
-    public function update()
+    public function update(Request $request, Category $category)
     {
+        $data = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'nullable|mimes:png, jpg, jpeg, webp',
+            'status' => 'required'
+        ]);
+
+        $category->update($data);
         return redirect()->route('category.index');
     }
 
-    public function destroy()
+    public function destroy(Category $category)
     {
+        $dcat = Category::find($category->id);
+        $dcat->delete();
         return redirect()->route('category.index');
     }
 }

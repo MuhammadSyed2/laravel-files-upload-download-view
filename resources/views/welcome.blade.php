@@ -196,22 +196,23 @@
                             <td class="text-center">{{ $category->name }}</td>
                             <td class="text-center">{{ $category->description }}</td>
                             <td class="text-center">{{ $category->status }}</td>
-                            <td class="text-center"><button class="p-2 bg-amber-600 rounded-lg"  data-toggle="modal" data-target="#editModal">Edit</button></td>
-                            <td class="text-center"><button class="p-2 bg-red-600 rounded-lg"  data-toggle="modal" data-target="#deleteModal">Delete</button></td>
+                            <td class="text-center"><button class="p-2 bg-amber-600 rounded-lg"  data-toggle="modal" data-target="#editModal{{ $category->id }}">Edit</button></td>
+                            <td class="text-center"><button class="p-2 bg-red-600 rounded-lg"  data-toggle="modal" data-target="#deleteModal{{ $category->id }}">Delete</button></td>
                         </tr>
 
                         {{-- edit modal --}}
-                        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" 
-                            aria-labelledby="addModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="editModal{{ $category->id }}" tabindex="-1" role="dialog" 
+                            aria-labelledby="editModalLabel{{ $category->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
-                                        <h1 class="modal-title fs-5 text-white" id="addModalLabel">Edit Category</h1>
+                                        <h1 class="modal-title fs-5 text-white" id="editModalLabel{{ $category->id }}">Edit Category</h1>
                                         <button type="button" class="btn-close" data-dismiss="modal"
                                             aria-label="Close" style="filter: invert(100%);"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form class="" id="deleteForm" method="POST" action="{{ route('category.store') }}">
+                                    <form class="" id="deleteForm" method="POST" action="{{ route('category.update', ['category' => $category]) }}">
                                         @csrf
+                                        @method('PUT')
                                         <div class="modal-body">
                                             <div class="mb-2">
                                                 <label for="name" class="form-label">Name : </label>
@@ -225,8 +226,8 @@
                                                 <label for="status" class="form-label">Status : </label>
                                                 <select name="status" id="status" class="form-control">
                                                     <option value="">Select an option</option>
-                                                    <option value="Active">Active</option>
-                                                    <option value="Inactive">Inactive</option>
+                                                    <option {{ ($category->status == "Active") ? "selected" : "" }} value="Active">Active</option>
+                                                    <option {{ ($category->status == "Inactive") ? "selected" : "" }} value="Inactive">Inactive</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -240,17 +241,18 @@
                         </div>
 
                         {{-- delete modal --}}
-                        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" 
-                            aria-labelledby="addModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal{{ $category->id }}" tabindex="-1" role="dialog" 
+                            aria-labelledby="deleteModalLabel{{ $category->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header" style="background: #2d1967; padding: 0.8rem 1rem;">
-                                        <h1 class="modal-title fs-5 text-white" id="addModalLabel">Add</h1>
+                                        <h1 class="modal-title fs-5 text-white" id="deleteModalLabel{{ $category->id }}">Delete Category</h1>
                                         <button type="button" class="btn-close" data-dismiss="modal"
                                             aria-label="Close" style="filter: invert(100%);"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form class="" id="deleteForm" method="POST" action="{{ route('category.store') }}">
+                                    <form class="" id="deleteForm" method="POST" action="{{ route('category.destroy', ['category' => $category]) }}">
                                         @csrf
+                                        @method('DELETE')
                                         <div class="modal-body">
                                             <div class="mb-2">
                                                 <label for="name" class="form-label">Name : </label>
@@ -258,20 +260,20 @@
                                             </div>
                                             <div class="mb-2">
                                                 <label for="description" class="form-label">Description : </label>
-                                                <input type="text" class="form-control" id="description" name="description">
+                                                <input type="text" class="form-control" id="description" name="description" value="{{ $category->description }}">
                                             </div>
                                             <div class="mb-2">
                                                 <label for="status" class="form-label">Status : </label>
                                                 <select name="status" id="status" class="form-control">
                                                     <option value="">Select an option</option>
-                                                    <option value="Active">Active</option>
-                                                    <option value="Inactive">Inactive</option>
+                                                    <option {{ ($category->status == "Active") ? "selected" : "" }} value="Active">Active</option>
+                                                    <option {{ ($category->status == "Inactive") ? "selected" : "" }} value="Inactive">Inactive</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
-                                            <button class="btn btn-sm btn-primary" type="submit" onclick="this.disabled=true;this.form.submit();">Add</button>
+                                            <button class="btn btn-sm btn-danger" type="submit" onclick="this.disabled=true;this.form.submit();">Delete</button>
                                         </div>
                                     </form>
                                 </div>
@@ -293,7 +295,7 @@
                         <button type="button" class="btn-close" data-dismiss="modal"
                             aria-label="Close" style="filter: invert(100%);"><span aria-hidden="true">&times;</span></button>
                     </div>
-                    <form class="" id="deleteForm" method="POST" action="{{ route('category.store') }}">
+                    <form class="" id="deleteForm" method="POST" action="{{ route('category.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div class="mb-2">
@@ -303,6 +305,10 @@
                             <div class="mb-2">
                                 <label for="description" class="form-label">Description : </label>
                                 <input type="text" class="form-control" id="description" name="description">
+                            </div>
+                            <div class="mb-2">
+                                <label for="image" class="form-label">Upload Image</label>
+                                <input type="file" class="form-control" id="image" name="image">
                             </div>
                             <div class="mb-2">
                                 <label for="status" class="form-label">Status : </label>
