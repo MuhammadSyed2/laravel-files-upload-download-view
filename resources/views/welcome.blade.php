@@ -307,8 +307,8 @@
                                 <input type="text" class="form-control" id="description" name="description">
                             </div>
                             <div class="mb-2">
-                                <label for="image" class="form-label">Upload Image</label>
-                                <input type="file" class="form-control" id="image" name="image">
+                                <label for="image" class="form-label">Upload Image : </label><br>
+                                <input type="file" class="" id="image" name="image">
                             </div>
                             <div class="mb-2">
                                 <label for="status" class="form-label">Status : </label>

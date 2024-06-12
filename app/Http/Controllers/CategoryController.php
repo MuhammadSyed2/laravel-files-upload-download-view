@@ -18,10 +18,31 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'image' => 'nullable',
             'status' => 'required'
         ]);
 
-        $category = Category::create($data);
+        if ($request -> has('image')) {
+            $file = $request->file('image');
+            $fextension = $file->getClientOriginalExtension();
+            if ($fextension == 'jpg' || $fextension == 'jpeg' || $fextension == 'png' || $fextension == 'webp') {
+                $path = 'upload/category/image/';
+            }
+            elseif ($fextension == 'csv' || $fextension == 'xlsx') {
+                $path = 'upload/category/excel/';
+            }
+            // $path = $file->getClientOriginalPath();
+            $filename = time().'.'.$fextension;
+            // $path = 'upload/category/';
+            $file->move($path, $filename);
+        }
+
+        $category = Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => $path.$filename,
+            'status' => $request->status
+        ]);
         return redirect()->route('category.index');
     }
 
