@@ -223,6 +223,10 @@
                                                 <input type="text" class="form-control" id="description" name="description" value="{{ $category->description }}">
                                             </div>
                                             <div class="mb-2">
+                                                <label for="image" class="form-label">Upload Image : </label><br>
+                                                <input type="file" class="" id="image" name="image" value="{{ $category->image }}"><br><span>Current Image : {{ $category->image }}</span>
+                                            </div>
+                                            <div class="mb-2">
                                                 <label for="status" class="form-label">Status : </label>
                                                 <select name="status" id="status" class="form-control">
                                                     <option value="">Select an option</option>
@@ -261,6 +265,10 @@
                                             <div class="mb-2">
                                                 <label for="description" class="form-label">Description : </label>
                                                 <input type="text" class="form-control" id="description" name="description" value="{{ $category->description }}">
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="image" class="form-label">Upload Image : </label><br>
+                                                <input type="file" class="" id="image" name="image" readonly><br><span>Current Image : {{ $category->image }}</span>
                                             </div>
                                             <div class="mb-2">
                                                 <label for="status" class="form-label">Status : </label>
